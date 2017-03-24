@@ -1,0 +1,14 @@
+{
+	"version": 0,
+	"dependencies": [
+		{
+			"importpath": "golang.org/x/crypto/sha3",
+			"repository": "https://go.googlesource.com/crypto",
+			"vcs": "git",
+			"revision": "459e26527287adbc2adcc5d0d49abff9a5f315a7",
+			"branch": "master",
+			"path": "/sha3",
+			"notests": true
+		}
+	]
+}
