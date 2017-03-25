@@ -14,6 +14,8 @@ import (
 	"crypto/elliptic"
 	"crypto/hmac"
 	crand "crypto/rand"
+	"encoding/hex"
+	"encoding/json"
 	"errors"
 	"math/big"
 )
@@ -134,4 +136,30 @@ func (pr *Proof) Verify() bool {
 	c := H.Sum(nil)
 
 	return hmac.Equal(pr.C.Bytes(), c)
+}
+
+func (pr *Proof) ToJSON() []byte {
+	type JSONProof struct {
+		G, M string
+		H, Z string
+		R    string
+		C    string
+		Hash string
+	}
+
+	proofJSON := JSONProof{}
+
+	proofJSON.G = hex.EncodeToString(pr.G.Marshal())
+	proofJSON.M = hex.EncodeToString(pr.M.Marshal())
+	proofJSON.H = hex.EncodeToString(pr.H.Marshal())
+	proofJSON.Z = hex.EncodeToString(pr.Z.Marshal())
+	serializedR, _ := pr.R.MarshalText()
+	serializedC, _ := pr.C.MarshalText()
+	proofJSON.R = string(serializedR)
+	proofJSON.C = string(serializedC)
+	proofJSON.Hash = "sha256"
+
+	buf, _ := json.Marshal(proofJSON)
+
+	return buf
 }
